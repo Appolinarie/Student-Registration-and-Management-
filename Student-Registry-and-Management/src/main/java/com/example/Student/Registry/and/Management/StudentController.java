@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -18,8 +16,8 @@ public class StudentController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<String> addStudent(@RequestBody Student student) {
+
+    public ResponseEntity<String> addStudent( Student student) {
         try {
             String message = studentService.addStudent(student);
             return ResponseEntity.status(HttpStatus.CREATED).body(message);
@@ -32,7 +30,7 @@ public class StudentController {
     }
 
 
-    @GetMapping
+
     public ResponseEntity<?> getAllStudents() {
         try {
             List<Student> students = studentService.getAllStudents();
@@ -44,8 +42,8 @@ public class StudentController {
     }
 
 
-    @GetMapping("/search")
-    public ResponseEntity<?> getStudentByName(@RequestParam String name) {
+
+    public ResponseEntity<?> getStudentByName( String name) {
         try {
             Student student = studentService.getStudentByName(name);
             return ResponseEntity.ok(student);
@@ -58,8 +56,8 @@ public class StudentController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeStudent(@PathVariable int id) {
+
+    public ResponseEntity<String> removeStudent( int id) {
         try {
             String message = studentService.removeStudent(id);
             return ResponseEntity.ok(message);
