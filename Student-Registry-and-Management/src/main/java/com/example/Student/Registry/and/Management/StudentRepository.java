@@ -6,10 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
- import java.sql.*;
- import java.util.ArrayList;
- import java.util.List;
-
 @Repository
 public class StudentRepository {
 
@@ -19,67 +15,54 @@ public class StudentRepository {
         this.conn = databaseConnection;
     }
 
-    public String addStudent(Student student) throws SQLException {
-
-        String insertSql = "INSERT INTO Student (Name, email, Age, id) VALUES (?, ?, ?,?, ?)";
-
-        PreparedStatement preparedStatement = conn.prepareStatement(insertSql);
-
-        preparedStatement.setString(1, student.getLastName());
-        preparedStatement.setString(2, student.getFirstName());
-        preparedStatement.setInt(3, student.getAge());
-        preparedStatement.setString(3, student.getEmail());;
-        preparedStatement.setInt(5,student.getId());
-
-        preparedStatement.executeUpdate();
-
-        preparedStatement.close();
-
-        return "Student added successfully";
+    public void addStudent(Student student) throws SQLException {
+        String sql = "INSERT INTO Student (full_name, age, email,id) VALUES (?, ?, ?,?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, student.getFirstName());
+            ps.setInt(2, student.getAge());
+            ps.setString(3, student.getEmail());
+            ps.executeUpdate();
+        }
     }
 
-    public void removeStudent(Student student) {
-
-    }
-
-    public List<Student> getStudent() throws SQLException {
+    public List<Student> getStudents() throws SQLException {
         List<Student> students = new ArrayList<>();
-        String select = "select * from Student";
-
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery(select);
-
-        while (rs.next()) {
-            String name = rs.getString("name");
-            int age = rs.getInt("age");
-            String email = rs.getString("email");
-            int id =rs.getInt("id");
-
-
-            students.add(new Student(name, age, email, id));
-
+        String sql = "SELECT * FROM Student";
+        try (Statement s = conn.createStatement();
+             ResultSet rs = s.executeQuery(sql)) {
+            while (rs.next()) {
+                students.add(new Student(
+                        rs.getString("full_name"),
+                        rs.getInt("age"),
+                        rs.getString("email"),
+                        rs.getInt("id")));
+            }
         }
         return students;
-
     }
 
-    public Student getStudent(String studentNmae) throws SQLException {
-        String selectSql = "select * from Student where name=?";
-
-        PreparedStatement ps = conn.prepareStatement(selectSql);
-        ps.setString(1, studentNmae);
-        ResultSet rs = ps.executeQuery();
-
-        ResultSet resultSet = ps.executeQuery();
-        if (resultSet.next()) {
-            String name = resultSet.getString("name");
-            int age = resultSet.getInt("age");
-            String gender = resultSet.getString("gender");
-            return new Student(name, age, gender);
+    public Student getStudentByName(String name) throws SQLException {
+        String sql = "SELECT * FROM Student WHERE full_name = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Student(
+                            rs.getString("full_name"),
+                            rs.getInt("age"),
+                            rs.getString("email"),
+                            rs.getInt("id"));
+                }
+            }
         }
-        return getStudent(studentNmae);
+        return null;
+    }
+
+    public boolean removeStudent(int id) throws SQLException {
+        String sql = "DELETE FROM Student WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
     }
 }
-
-
-

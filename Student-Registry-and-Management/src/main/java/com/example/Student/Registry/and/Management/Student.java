@@ -1,19 +1,24 @@
 package com.example.Student.Registry.and.Management;
 
 public class Student {
+
     private String firstName;
     private String lastName;
     private String email;
     private int Age;
     private int id;
 
-    public Student(String firstName, String lastName, String email, int Age, int id){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Student(String fullName, String email, int Age, int id){
+        this.firstName =firstName;
+        this.lastName =lastName;
         this.email = email;
         this.Age = Age;
         this.id = id;
     }
+
+    public Student(String fullName, int age, String email, int id) {
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
