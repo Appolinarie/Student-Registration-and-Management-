@@ -1,5 +1,7 @@
-package com.example.Student.Registry.and.Management;
+package Service;
 
+import Repository.StudentRepository;
+import com.example.Student.Registry.and.Management.Student;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

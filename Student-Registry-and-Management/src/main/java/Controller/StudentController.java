@@ -1,8 +1,9 @@
-package com.example.Student.Registry.and.Management;
+package Controller;
 
+import com.example.Student.Registry.and.Management.Student;
+import Service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -39,6 +40,14 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Database error: " + e.getMessage());
         }
+
+
+
+
+
+
+
+
     }
 
 

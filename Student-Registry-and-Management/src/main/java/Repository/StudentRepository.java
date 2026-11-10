@@ -1,5 +1,6 @@
-package com.example.Student.Registry.and.Management;
+package Repository;
 
+import com.example.Student.Registry.and.Management.Student;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -40,6 +41,7 @@ public class StudentRepository {
         }
         return students;
     }
+
 
     public Student getStudentByName(String name) throws SQLException {
         String sql = "SELECT * FROM Student WHERE full_name = ?";
